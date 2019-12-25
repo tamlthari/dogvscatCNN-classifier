@@ -72,12 +72,15 @@
             <h1 style="font-size: 2rem">
               Confidence: <span style="font-weight: bold; color:whitesmoke;">{{prob}}%</span>
             </h1>
-            <h5 style="font-size: 1rem">Reupload image and rename file if prediction incorrect</h5> 
-            <h5 style="font-size: 1rem">e.g name file cat.122419.jpg if cat image</h5>
-            <form action="/save" method="post" id="form1" enctype="multipart/form-data">
+            <h5 style="font-size: 1rem">Reupload image if prediction incorrect</h5> 
+            <form action="/savedog" method="post" id="form1" enctype="multipart/form-data">
               <input name = "image" id="image-file" type="file"/>
-              <input name = "image" id="btn-submit3" type="submit" value="submit" />
-          </form>
+              <input name = "image" id="btn-submit3" type="submit" value="dog" />
+            </form>
+            <form action="/savecat" method="post" id="form1" enctype="multipart/form-data">
+              <input name = "image" id="image-file" type="file"/>
+              <input name = "image" id="btn-submit4" type="submit" value="cat" />
+            </form>
             <br>
             <a href="/" class="button is-danger is-inverted is-outlined" style="font-size:1.5rem">Back to Home</a>
           </div>

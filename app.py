@@ -10,6 +10,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 UPLOAD_FOLDER = "uploads"
 STATIC_FOLDER = "static"
 SAVE_FOLDER = "saves"
+COUNTER = 99999
 
 # Load model
 cnn_model = tf.keras.models.load_model(STATIC_FOLDER + "/models/" + "dog_cat_TK_2.h5")
@@ -79,10 +80,22 @@ def send_file(filename):
     return send_from_directory(UPLOAD_FOLDER, filename)
 
 
-@app.route("/save", methods=["POST"])
-def save_file():
+@app.route("/savedog", methods=["POST"])
+def save_dog():
+    global COUNTER
     file = request.files["image"]
-    upload_image_path = os.path.join(SAVE_FOLDER, file.filename)
+    COUNTER += 1
+    upload_image_path = os.path.join(SAVE_FOLDER, 'dog.'+str(COUNTER)+'.jpg')
+    print(upload_image_path)
+    file.save(upload_image_path)
+    return redirect(url_for('home'))
+
+@app.route("/savecat", methods=["POST"])
+def save_cat():
+    global COUNTER
+    file = request.files["image"]
+    COUNTER += 1
+    upload_image_path = os.path.join(SAVE_FOLDER, 'cat.'+str(COUNTER)+'.jpg')
     print(upload_image_path)
     file.save(upload_image_path)
     return redirect(url_for('home'))
