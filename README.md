@@ -16,4 +16,4 @@ We use Tensorflow 2.0.0 and Keras MobileNetV2 to build our model. The last layer
 
 ### Flask app
 -  Our Flask app allows users to upload an image of cat or dog to be classified and output the class and % confidence (probability)
--   In case of misclassification, our app allows user to reupload image with correct label as name and save these images for future training.
+-   In case of misclassification, our app allows user to save test images to our Heroku PostGres database for future training.

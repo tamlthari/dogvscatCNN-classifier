@@ -1,16 +1,17 @@
 import os
 from flask import Flask, render_template, request, redirect, url_for
 from flask import send_from_directory
+from werkzeug.utils import secure_filename
 import numpy as np
 import tensorflow as tf
+import base64
+import sql
 
 app = Flask(__name__)
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 UPLOAD_FOLDER = "uploads"
 STATIC_FOLDER = "static"
-SAVE_FOLDER = "saves"
-COUNTER = 99999
 
 # Load model
 cnn_model = tf.keras.models.load_model(STATIC_FOLDER + "/models/" + "dog_cat_TK_2.h5")
@@ -22,6 +23,7 @@ def preprocess_image(image):
     image = tf.image.decode_jpeg(image, channels=3)
     image = tf.image.resize(image, [IMAGE_SIZE, IMAGE_SIZE])
     image /= 255.0  # normalize to [0,1] range
+    image = 2*image-1  # normalize to [-1,1] range
 
     return image
 
@@ -79,25 +81,11 @@ def upload_file():
 def send_file(filename):
     return send_from_directory(UPLOAD_FOLDER, filename)
 
-
-@app.route("/savedog", methods=["POST"])
-def save_dog():
-    global COUNTER
-    file = request.files["image"]
-    COUNTER += 1
-    upload_image_path = os.path.join(SAVE_FOLDER, 'dog.'+str(COUNTER)+'.jpg')
-    print(upload_image_path)
-    file.save(upload_image_path)
-    return redirect(url_for('home'))
-
-@app.route("/savecat", methods=["POST"])
-def save_cat():
-    global COUNTER
-    file = request.files["image"]
-    COUNTER += 1
-    upload_image_path = os.path.join(SAVE_FOLDER, 'cat.'+str(COUNTER)+'.jpg')
-    print(upload_image_path)
-    file.save(upload_image_path)
+@app.route('/thank_you/<img_name>/<answer>', methods = ['GET', 'POST'])
+def thank_you(img_name, answer):
+    img_path = os.getcwd() + '/uploads/' + img_name
+    sql.save_into_db(img_path, answer)
+    # os.remove(img_path)
     return redirect(url_for('home'))
 
 @app.route('/model')

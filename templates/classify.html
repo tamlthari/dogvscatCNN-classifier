@@ -72,15 +72,10 @@
             <h1 style="font-size: 2rem">
               Confidence: <span style="font-weight: bold; color:whitesmoke;">{{prob}}%</span>
             </h1>
-            <h5 style="font-size: 1rem">Reupload image if prediction incorrect</h5> 
-            <form action="/savedog" method="post" id="form1" enctype="multipart/form-data">
-              <input name = "image" id="image-file" type="file"/>
-              <input name = "image" id="btn-submit3" type="submit" value="submit as dog" />
-            </form>
-            <form action="/savecat" method="post" id="form1" enctype="multipart/form-data">
-              <input name = "image" id="image-file" type="file"/>
-              <input name = "image" id="btn-submit4" type="submit" value="submit as cat" />
-            </form>
+            <h5 style="font-size: 1rem">Please select if dog/cat to save into our database</h5> 
+            <a href="{{url_for('thank_you', img_name=image_file_name, answer=1)}}" class="button btn-lg btn-primary btn-block is-outlined">Cat</a>
+            <a href="{{url_for('thank_you', img_name=image_file_name, answer=0)}}" class="button btn-lg is-danger btn-block is-outlined">Dog</a>
+
             <br>
             <a href="/" class="button is-danger is-inverted is-outlined" style="font-size:1.5rem">Back to Home</a>
           </div>
@@ -93,49 +88,6 @@
 
 
   <script src="/static/script.js"></script>
-  <script>
-    $(document).ready(function() {
- 
-        initImageUpload();
- 
-        function initImageUpload() {
-            $("#btn-submit3").click(function(e) {
-                e.preventDefault();
- 
-                var everlive = new Everlive({
-                    appId: "",
-                    scheme: "https"
-                });
- 
-                // construct the form data and apply new file name
-                var file = $('#image-file').get(0).files[0];
- 
-                var newFileName = file.filename + "new";
-                var formData = new FormData();
-                formData.append('file', file, newFileName);
- 
- 
-                $.ajax({
-                    url: everlive.files.getUploadUrl(), // get the upload URL for the server
-                    success: function(fileData) {
-                        alert('Created file with Id: ' + fileData.Result[0].Id); // access the result of the file upload for the created file
-                        alert('The created file Uri is available at URL: ' + fileData.Result[0].Uri);
-                    },
-                    error: function(e) {
-                        alert('error ' + e.message);
-                    },
-                    // Form data
-                    data: formData,
-                    type: 'POST',
-                    cache: false,
-                    contentType: false,
-                    processData: false
-                });
-                return false;
-            });
-        }
-    });
-</script>
 
 </body>
 </html>
