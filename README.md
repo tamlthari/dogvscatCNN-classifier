@@ -19,7 +19,7 @@ We use Tensorflow 2.0.0 and Keras MobileNetV2 to build our model. The last layer
 -   In case of misclassification, our app allows user to save test images to our Heroku PostGres database for future training.
 
 ### Database
--   We have two PostGreSQL connection configurations for our saved images: psycopg2 (for local Flask app) and SQLAlchemy (for heroku)
+-   We have two PostGreSQL connection configurations for our saved images: psycopg2 (for local Flask app) and SQLAlchemy (for heroku) (See my tikiPostGreSQL-app repo for how to set up heroku SQLAlchemy db and connection)
 -   Our data table contains one id column and two columns for images (BYTEA type) and label (int type)
 -   We encode images using base64 format to save into img column in our table
 -   In order to run locally, users can clone the repo. First create PostGreSQL data table as describe above. Then edit the psycopg2 connections in `sql.py` to fit with your database on your local system. Then run `python app.py` to start Flask app locally.
